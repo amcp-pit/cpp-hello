@@ -1,0 +1,29 @@
+name: GitHub Classroom Workflow
+
+on: 
+  workflow_dispatch:
+  push:
+    paths-ignore:
+      - '.github/*'
+
+permissions:
+  checks: write
+  actions: read
+  contents: read
+
+jobs:
+  Checking-Solution:
+    runs-on: gtest
+    timeout-minutes: 2
+    steps:
+      - name: Get repository code
+        uses: actions/checkout@v4
+      - name: Build
+        run: |
+             clang++ -pedantic-errors -std=c++20 hello.cpp -o hello
+      - name: Autograding
+        uses: amcp-pit/autograding@v1
+      - name: Clean
+        run: |
+             rm -rf ./* || true
+             rm -rf ./.??* || true
